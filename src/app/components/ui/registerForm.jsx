@@ -1,17 +1,36 @@
 import React, {useState, useEffect} from "react"
 import {validator} from '../../utils/validator'
 import TextField from '../common/form/textField'
+import SelectedField from '../common/form/selectField'
+import api from '../../api'
+import RadioField from "../common/form/radioField"
+import MultiSelectField from "../common/form/multiSelectField"
+
+
 
 const RegisterForm = () => {
-
-    const [data, setData] = useState({ email: "", password: "" });
+    const [data, setData] = useState({ email: "",
+    password: "",
+    profession: "",
+    sex: 'female',
+    qualities:[]
+    });
+    const [professions, setProfession] = useState();
     const [errors, setErrors] = useState({});
-    const handleChange = ({ target }) => {
+    const [qualities, setQualities] = useState({})
+
+    useEffect(() => {
+        api.professions.fetchAll().then((data) => setProfession(data));
+        api.qualities.fetchAll().then((data) => setQualities(data));
+    }, []);
+
+    const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
             [target.name]: target.value
         }));
     };
+
     const validatorConfig = {
         email: {
             isRequired: {
@@ -35,11 +54,18 @@ const RegisterForm = () => {
                 message: "Пароль должен состоять минимум из 8 символов",
                 value: 8
             }
+        },
+        profession: {
+            isRequired: {
+                message: 'Обязательно выберите вашу профессию'
+            }
         }
     };
+
     useEffect(() => {
         validate();
     }, [data]);
+
     const validate = () => {
         const errors = validator(data, validatorConfig);
         setErrors(errors);
@@ -71,22 +97,31 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 error={errors.password}
             />
-            <div className="mb-4">
-                <label htmlFor="validation" className="form-label">
-                    State
-                </label>
-                <select className="form-select" id = "" required>
-                    <option selected disabled value="">
-                        Choose...
-                    </option>
-                    <option value = "_id">
-                        ...
-                    </option>
-                </select>
-                <div className="invalid-feedback">
-                    Select a valid state
-                </div>
-            </div>
+            <SelectedField
+                label={'Выберите профессию'}
+                onChange={handleChange}
+                options={professions} 
+                defoultOption={'Choose...'}
+                error={errors.profession}
+                value={data.profession}
+            />
+            <RadioField
+                options={[
+                    {name: 'Male', value:'male'},
+                    {name: 'Female', value: 'female'},
+                    {name: 'Other', value:'other'}
+                ]}
+                value={data.sex}
+                name='sex'
+                onChange={handleChange}
+                label="Выберите ваш пол"
+            />
+            <MultiSelectField
+                options={qualities}
+                onChange={handleChange}
+                name='qualities'
+                label="Выберите ваши качества"
+            />
             <button
                 className="btn btn-primary w-100 mx-auto"
                 type="submit"
