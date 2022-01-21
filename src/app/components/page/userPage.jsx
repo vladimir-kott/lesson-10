@@ -23,7 +23,7 @@ const UserPage = ({ userId }) => {
                 <p>completedMeetings: {user.completedMeetings}</p>
                 <h2>Rate: {user.rate}</h2>
                 {/*<button onClick={handleClick}> Изменить </button>*/}
-                <Link className="btn" to={`/users/${userId}/edit`}>Изменить</Link>
+                <Link className="btn btn-primary mx-auto" to={`/users/${userId}/edit`}>Изменить</Link>
             </div>
         );
     } else {

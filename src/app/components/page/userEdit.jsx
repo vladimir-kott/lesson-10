@@ -5,10 +5,10 @@ import SelectedField from '../common/form/selectField'
 import api from '../../api'
 import RadioField from "../common/form/radioField"
 import MultiSelectField from "../common/form/multiSelectField"
-import { useHistory } from "react-router-dom"
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const UserEdit = () => {
+    const history = useHistory();
     const userId = useHistory().location.pathname.split('/')[2]
     const [professions, setProfession] = useState([]);
     const [errors, setErrors] = useState({});
@@ -28,7 +28,8 @@ const UserEdit = () => {
         }));
     };
 
-    //console.log(data.profession.name)
+    let dataBefore = data
+
 
     const validatorConfig = {
         name: {
@@ -76,7 +77,8 @@ const UserEdit = () => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        console.log(data);
+        api.users.update(userId, data)
+        history.push(`/users/${userId}`);
     };
     return (
         <div className="container mt-5">
@@ -124,7 +126,6 @@ const UserEdit = () => {
                             label="Выберите ваши качества"
                             defoultValue={data.qualities}
                         />
-                        <Link to={`/users/${userId}`}>
                         <button
                             className="btn btn-primary w-100 mx-auto"
                             type="submit"
@@ -132,7 +133,6 @@ const UserEdit = () => {
                         >
                             Submit
                         </button>
-                        </Link>
                     </form>)}
                 </div>
             </div>

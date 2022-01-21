@@ -13,8 +13,6 @@ const SelectedField = ({label, value, onChange, defoultOption, options, error, n
         onChange({name: target.name, value: target.value})
     }
 
-    console.log('value', value)
-
     return (  
         <div className="mb-4">
                 <label htmlFor={name} className="form-label">
