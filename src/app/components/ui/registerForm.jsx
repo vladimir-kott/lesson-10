@@ -111,6 +111,7 @@ const RegisterForm = () => {
                 defoultOption={'Choose...'}
                 error={errors.profession}
                 value={data.profession}
+                name="profession"
             />
             <RadioField
                 options={[
@@ -128,6 +129,7 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 name='qualities'
                 label="Выберите ваши качества"
+                defoultValue={data.qualities}
             />
             <ChackBoxField
                 value={data.license}

@@ -30,7 +30,7 @@ const LoginForm = () => {
         validateSchame
         .validate(data)
         .then(()=>setErrors({}))
-        .catch(err=>({[err.path]:err.message}))
+        .catch(err=>setErrors({[err.path]:err.message}))
         //setErrors(errors);
         return Object.keys(errors).length === 0;
     };
