@@ -10,10 +10,10 @@ import { useHistory } from "react-router-dom";
 const UserEdit = () => {
     const history = useHistory();
     const userId = useHistory().location.pathname.split('/')[2]
-    const [professions, setProfession] = useState([]);
+    const [professions, setProfession] = useState();
     const [errors, setErrors] = useState({});
-    const [qualities, setQualities] = useState({})
-    const [data, setData] = useState({})
+    const [qualities, setQualities] = useState()
+    const [data, setData] = useState()
 
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfession(data));
@@ -22,14 +22,32 @@ const UserEdit = () => {
     }, []);
 
     const handleChange = (target) => {
-        setData((prevState) => ({
-            ...prevState,
-            [target.name]: target.value
-        }));
+        if (target.name === 'profession'){
+            console.log('profession')
+            setData((prevState) => ({
+                ...prevState,
+                profession:{
+                name: target.value,
+                _id: userId}
+            }));
+        }
+        else if (target.name === 'qualities'){
+            let dataTarget = []
+            target.value.forEach(element => {
+                Object.values(qualities).filter((el) => {
+                    if (el._id === element.value){
+                        dataTarget.push(el)
+                    }
+                })
+            });
+        }
+        else{
+            setData((prevState) => ({
+                ...prevState,
+                [target.name]: target.value
+            }));
+        }
     };
-
-    let dataBefore = data
-
 
     const validatorConfig = {
         name: {
@@ -77,6 +95,7 @@ const UserEdit = () => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
+        console.log('data', data)
         api.users.update(userId, data)
         history.push(`/users/${userId}`);
     };
@@ -103,10 +122,11 @@ const UserEdit = () => {
                             label={'Выберите профессию'}
                             onChange={handleChange}
                             options={professions} 
-                            defoultOption={'Choose...'}
+                            defaultOption={'Choose...'}
                             error={errors.profession}
                             value={data.profession}
                             name="profession"
+                            selected={userId} 
                         />
                         <RadioField
                             options={[
@@ -124,7 +144,7 @@ const UserEdit = () => {
                             onChange={handleChange}
                             name='qualities'
                             label="Выберите ваши качества"
-                            defoultValue={data.qualities}
+                            defaultValue={data.qualities}
                         />
                         <button
                             className="btn btn-primary w-100 mx-auto"

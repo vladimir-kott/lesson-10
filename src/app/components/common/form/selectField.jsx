@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const SelectedField = ({label, value, onChange, defoultOption, options, error, name}) => {
+const SelectedField = ({label, value, onChange, defaultOption, options, error, name, selected}) => {
     const getInputClasses = () => {
         return "form-select" + (error ? ' is-invalid':'')
     }
@@ -26,13 +26,14 @@ const SelectedField = ({label, value, onChange, defoultOption, options, error, n
                     onChange={handleChange}
                     >
                     <option disabled value="">
-                        {defoultOption}
+                        {defaultOption}
                     </option>
                     {
                         optionArray && optionArray.map(option => 
-                        <option 
+                        <option
                             value={option._id}
                             key = {option._id}
+                            selected = {selected}
                             >
                             {option.name}
                         </option>)
@@ -46,7 +47,7 @@ const SelectedField = ({label, value, onChange, defoultOption, options, error, n
 }
 
 SelectedField.propTypes = {
-    defoultOption: PropTypes.string,
+    defaultOption: PropTypes.string,
     label: PropTypes.string,
     value: PropTypes.string,
     onChange: PropTypes.func,
