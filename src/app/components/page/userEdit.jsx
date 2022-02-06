@@ -32,14 +32,18 @@ const UserEdit = () => {
             }));
         }
         else if (target.name === 'qualities'){
-            let dataTarget = []
+            /*let dataTarget = []
             target.value.forEach(element => {
                 Object.values(qualities).filter((el) => {
                     if (el._id === element.value){
                         dataTarget.push(el)
                     }
                 })
-            });
+            });*/
+            const qualityValue = Object.values(target.value).map((quality) => quality.value)
+            const qualityObject = Object.values(qualities).filter((quality) =>
+            qualityValue.includes(quality._id));
+            setData((prevState) => ({ ...prevState, qualities: qualityObject }));
         }
         else{
             setData((prevState) => ({
@@ -97,6 +101,7 @@ const UserEdit = () => {
         if (!isValid) return;
         console.log('data', data)
         api.users.update(userId, data)
+        
         history.push(`/users/${userId}`);
     };
     return (
