@@ -12,10 +12,6 @@ const MultiSelectField = ({options, onChange, name, label, defaultValue}) => {
         onChange({name:name, value})
     }
 
-    let formatDefValue = defaultValue.map(el => {
-        return { value: el._id, label: el.name }
-    })
-
     return ( 
         <div className="mb-4">
             <label className="form-label">
@@ -29,7 +25,7 @@ const MultiSelectField = ({options, onChange, name, label, defaultValue}) => {
                     classNamePrefix='select'
                     onChange={handleChange} 
                     name={name}
-                    defaultValue={formatDefValue}
+                    defaultValue={defaultValue}
                 />
         </div>
      );

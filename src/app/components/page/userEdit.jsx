@@ -21,6 +21,8 @@ const UserEdit = () => {
         api.users.getById(userId).then((data) => setData(data));
     }, []);
 
+    console.log('data', data)
+
     const handleChange = (target) => {
         if (target.name === 'profession'){
             console.log('profession')
@@ -104,6 +106,7 @@ const UserEdit = () => {
         
         history.push(`/users/${userId}`);
     };
+
     return (
         <div className="container mt-5">
             <div className="row">
@@ -149,7 +152,9 @@ const UserEdit = () => {
                             onChange={handleChange}
                             name='qualities'
                             label="Выберите ваши качества"
-                            defaultValue={data.qualities}
+                            defaultValue={data.qualities.map(el => {
+                                return { value: el._id, label: el.name }
+                            })}
                         />
                         <button
                             className="btn btn-primary w-100 mx-auto"

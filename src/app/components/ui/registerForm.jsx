@@ -24,6 +24,7 @@ const RegisterForm = () => {
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfession(data));
         api.qualities.fetchAll().then((data) => setQualities(data));
+        console.log('api.qualities', api.qualities) 
     }, []);
 
     const handleChange = (target) => {
@@ -62,6 +63,11 @@ const RegisterForm = () => {
                 message: 'Обязательно выберите вашу профессию'
             }
         },
+        qualities: {
+            isRequired: {
+                message: 'Обязательно выберите ваши качества'
+            }
+        },
         license: {
             isRequired: {
                 message: 'Подтвердите лицензионное соглашение'
@@ -86,8 +92,10 @@ const RegisterForm = () => {
         if (!isValid) return;
         console.log(data);
     };
+
+    console.log('data qualities ', data)
+
     return (
-        
          <form onSubmit={handleSubmit}>
              <TextField
                 label="Электронная почта"
@@ -129,6 +137,7 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 name='qualities'
                 label="Выберите ваши качества"
+                error={errors.qualities}
                 defoultValue={data.qualities}
             />
             <ChackBoxField
