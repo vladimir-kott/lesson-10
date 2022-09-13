@@ -16,12 +16,10 @@ const UserEdit = () => {
     const [data, setData] = useState()
 
     useEffect(() => {
+        api.users.getById(userId).then((data) => setData(data));
         api.professions.fetchAll().then((data) => setProfession(data));
         api.qualities.fetchAll().then((data) => setQualities(data));
-        api.users.getById(userId).then((data) => setData(data));
     }, []);
-
-    console.log('data', data)
 
     const handleChange = (target) => {
         if (target.name === 'profession'){
@@ -106,12 +104,12 @@ const UserEdit = () => {
         
         history.push(`/users/${userId}`);
     };
-
+    console.log('user', data)
     return (
         <div className="container mt-5">
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
-                    {(data&&<form onSubmit={handleSubmit}>
+                    {(data&&userId&&<form onSubmit={handleSubmit}>
                         <TextField
                             label="Имя"
                             name="name"
@@ -132,7 +130,7 @@ const UserEdit = () => {
                             options={professions} 
                             defaultOption={'Choose...'}
                             error={errors.profession}
-                            value={data.profession}
+                            value={data.profession.name}
                             name="profession"
                             selected={userId} 
                         />
